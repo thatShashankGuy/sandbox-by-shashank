@@ -1,15 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-  <!-- Sandbox container -->
-  <rect x="20" y="40" width="160" height="100" rx="10" ry="10" fill="#f4d03f" stroke="#e67e22" stroke-width="4"/>
+<svg
+  width="100"
+  height="100"
+  viewBox="0 0 100 100"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Left angle bracket "<" -->
+  <path d="M40 20 L15 50 L40 80" stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
   
-  <!-- Sand texture effect -->
-  <rect x="20" y="140" width="160" height="20" fill="#f39c12" />
-  
-  <!-- Optional illustrative elements (e.g., a small shovel icon) -->
-  <path d="M50 70 l10 -20 l5 5 l-10 20 l-5 -5" fill="#fff" stroke="#e67e22" stroke-width="2" />
-  
-  <!-- Logo text -->
-  <text x="100" y="190" font-size="20" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
-    Sandbox
-  </text>
+  <!-- Forward slash "/" -->
+  <path d="M50 20 L30 80" stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Right angle bracket ">" -->
+  <path d="M60 20 L85 50 L60 80" stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
 </svg>
