@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 
 export default function CodeEditorApp() {
-  const [code, setCode] = useState<string>("console.log('Hello, World!')");
+  const [code, setCode] = useState<string>(
+    "console.log('Welcome to the sandbox')"
+  );
   const [output, setOutput] = useState<string>("");
   const [language, setLanguage] = useState<string>("javascript");
   const [editorTheme, setEditorTheme] = useState<string>("vs-light");
@@ -22,6 +24,20 @@ export default function CodeEditorApp() {
       setOutput(`Error: ${(error as Error).message}`);
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        runCode();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [code, language]);
 
   return (
     <div className="flex flex-col w-full h-screen p-4">
@@ -47,6 +63,12 @@ export default function CodeEditorApp() {
           <option value="java">Java</option>
           <option value="csharp">C#</option>
         </select>
+        <button
+          onClick={runCode}
+          className="px-4 py-2 bg-black text-white font-semibold rounded hover:bg-blue-600 transition mt-2"
+        >
+          Run Code
+        </button>
         <select
           className="p-2 border rounded"
           value={editorTheme}
@@ -75,12 +97,6 @@ export default function CodeEditorApp() {
             value={code}
             onChange={(newValue) => setCode(newValue || "")}
           />
-          <button
-            onClick={runCode}
-            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition mt-2"
-          >
-            Run Code
-          </button>
         </div>
         <div className={`w-1/2 p-4 overflow-auto ${terminalColor}`}>
           <strong>Output:</strong>
