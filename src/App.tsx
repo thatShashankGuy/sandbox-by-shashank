@@ -1,28 +1,89 @@
 import { useState, useEffect } from "react";
-import Editor from "@monaco-editor/react";
+import Editor, { useMonaco } from "@monaco-editor/react";
+import ReactMarkdown from "react-markdown";
+import { saveAs } from "file-saver";
 
 export default function CodeEditorApp() {
   const [code, setCode] = useState<string>(
     "console.log('Welcome to the sandbox')"
   );
   const [output, setOutput] = useState<string>("");
-  const [language, setLanguage] = useState<string>("javascript");
+  const [language, setLanguage] = useState<string>("typescript");
   const [editorTheme, setEditorTheme] = useState<string>("vs-light");
   const [terminalColor, setTerminalColor] = useState<string>("bg-white-900");
 
+  const monaco = useMonaco();
+  useEffect(() => {
+    if (monaco) {
+      monaco.languages.register({ id: "markdown" });
+      monaco.languages.register({ id: "typescript" });
+      monaco.languages.register({ id: "javascript" });
+      monaco.languages.setMonarchTokensProvider("markdown", {
+        tokenizer: {
+          root: [
+            [/^#{1,6} .*/, "keyword"],
+            [/`[^`]+`/, "string"],
+            [/\*\*[^*]+\*\*/, "bold"],
+            [/\*[^*]+\*/, "italic"],
+            [/\[.*\]\(.*\)/, "link"],
+          ],
+        },
+      });
+
+      monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+        noSemanticValidation: language !== "javascript",
+        noSyntaxValidation: language !== "javascript",
+      });
+
+      monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+        target: monaco.languages.typescript.ScriptTarget.ESNext,
+        allowNonTsExtensions: true,
+        moduleResolution:
+          monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+        noEmit: true,
+        strict: language === "typescript",
+        noImplicitAny: language === "typescript",
+        strictNullChecks: language === "typescript",
+        strictFunctionTypes: language === "typescript",
+      });
+    }
+  }, [monaco]);
+
+  useEffect(() => {
+    if (language === "markdown") {
+      setOutput(code);
+    }
+  }, [code, language]);
+
   const runCode = (): void => {
     try {
-      if (language === "javascript") {
+      if (language === "javascript" || language === "typescript") {
         const consoleLog: string[] = [];
         const customConsole = { log: (msg: string) => consoleLog.push(msg) };
         new Function("console", code)(customConsole);
         setOutput(consoleLog.join("\n"));
+      } else if (language === "markdown") {
+        setOutput(code);
       } else {
         setOutput("Language execution not supported yet.");
       }
     } catch (error) {
       setOutput(`Error: ${(error as Error).message}`);
     }
+  };
+
+  const downloadScript = () => {
+    const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
+    saveAs(
+      blob,
+      `script.${
+        language === "javascript"
+          ? "js"
+          : language === "typescript"
+          ? "ts"
+          : "md"
+      }`
+    );
   };
 
   useEffect(() => {
@@ -32,7 +93,6 @@ export default function CodeEditorApp() {
         runCode();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
@@ -58,16 +118,21 @@ export default function CodeEditorApp() {
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
         >
+          <option value="typescript">TypeScript</option>
           <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="java">Java</option>
-          <option value="csharp">C#</option>
+          <option value="markdown">Markdown</option>
         </select>
         <button
           onClick={runCode}
           className="px-4 py-2 bg-black text-white font-semibold rounded hover:bg-blue-600 transition mt-2"
         >
           Run Code
+        </button>
+        <button
+          onClick={downloadScript}
+          className="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition"
+        >
+          Download Script
         </button>
         <select
           className="p-2 border rounded"
@@ -95,12 +160,17 @@ export default function CodeEditorApp() {
             theme={editorTheme}
             defaultLanguage={language}
             value={code}
+            options={{ wordWrap: "on" }}
             onChange={(newValue) => setCode(newValue || "")}
           />
         </div>
         <div className={`w-1/2 p-4 overflow-auto ${terminalColor}`}>
           <strong>Output:</strong>
-          <pre className="whitespace-pre-wrap">{output}</pre>
+          {language === "markdown" ? (
+            <ReactMarkdown>{output}</ReactMarkdown>
+          ) : (
+            <pre className="whitespace-pre-wrap">{output}</pre>
+          )}
         </div>
       </div>
     </div>
