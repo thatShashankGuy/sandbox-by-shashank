@@ -1,50 +1,90 @@
-# React + TypeScript + Vite
+Sandbox v0.1
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sandbox v0.1 is an interactive online code editor that supports JavaScript, TypeScript, and Markdown. It provides real-time code execution, a built-in Markdown preview, a customizable editor theme, and keyboard shortcuts for an enhanced coding experience.
 
-Currently, two official plugins are available:
+🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Supports JavaScript, TypeScript, and Markdown
 
-## Expanding the ESLint configuration
+Live execution for JavaScript & TypeScript
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Real-time Markdown preview
 
-- Configure the top-level `parserOptions` property like this:
+Customizable themes (Light, Dark, High Contrast)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Keyboard shortcut (Ctrl + S) to run code
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Download script feature
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Monospace coding font & typing animation for the header
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+📦 Installation
+
+Clone the repository:
+
+git clone https://github.com/yourusername/sandbox.git
+cd sandbox
+
+Install dependencies:
+
+npm install
+
+Run the development server:
+
+npm run dev
+
+🛠️ Dependencies
+
+The project uses the following key dependencies:
+
+Monaco Editor (@monaco-editor/react) – for a powerful code editing experience
+
+React Markdown (react-markdown) – for live Markdown preview
+
+Framer Motion (framer-motion) – for smooth animations
+
+File Saver (file-saver) – to enable script downloads
+
+Tailwind CSS – for responsive styling
+
+Install missing dependencies with:
+
+npm install @monaco-editor/react react-markdown framer-motion file-saver
+
+🖥️ Usage
+
+Select the programming language (JavaScript, TypeScript, or Markdown)
+
+Type your code in the Monaco Editor
+
+Press Ctrl + S or click Run Code to execute
+
+If Markdown is selected, the right pane will show a real-time preview
+
+Use the Download Script button to save your code locally
+
+🎨 Customization
+
+You can modify:
+
+Editor theme (Light, Dark, High Contrast)
+
+Terminal background color (White, Dark Gray, Black)
+
+Typing effect speed in useEffect (for the header animation)
+
+🏗️ Future Enhancements
+
+Add support for more programming languages
+
+Implement drag-resizable panels
+
+Allow users to save and load previous code snippets
+
+Improve TypeScript execution with a real-time compiler
+
+👨‍💻 Author
+
+Developed by Shashank. Feel free to contribute or provide feedback!
+
+⭐ Enjoy coding in the Sandbox! 🚀
