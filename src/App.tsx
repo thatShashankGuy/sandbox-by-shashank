@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import ReactMarkdown from "react-markdown";
 import { saveAs } from "file-saver";
@@ -11,7 +12,18 @@ export default function CodeEditorApp() {
   const [language, setLanguage] = useState<string>("typescript");
   const [editorTheme, setEditorTheme] = useState<string>("vs-light");
   const [terminalColor, setTerminalColor] = useState<string>("bg-white-900");
+  const [displayText, setDisplayText] = useState<string>("");
+  const fullText = "sandbox v0.1 by shashank";
 
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(interval);
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
   const monaco = useMonaco();
   useEffect(() => {
     if (monaco) {
@@ -101,17 +113,22 @@ export default function CodeEditorApp() {
 
   return (
     <div className="flex flex-col w-full h-screen p-4">
-      <h1 className="text-3xl font-extrabold mb-6 text-center text-blue-500">
-        Sandbox v0.1 by{" "}
+      <motion.h1
+        className="text-3xl font-mono mb-6 text-center text-blue-500"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        {displayText}
         <a
           href="https://www.linkedin.com/in/thatshashanguy/"
           target="_blank"
           rel="noopener noreferrer"
           className="text-red-500 hover:text-red-700 underline decoration-wavy"
         >
-          Shashank
+          ;
         </a>
-      </h1>
+      </motion.h1>
       <div className="flex justify-between mb-4">
         <select
           className="p-2 border rounded"
