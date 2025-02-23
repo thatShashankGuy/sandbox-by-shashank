@@ -13,7 +13,7 @@ export default function CodeEditorApp() {
   const [editorTheme, setEditorTheme] = useState<string>("vs-light");
   const [terminalColor, setTerminalColor] = useState<string>("bg-white-900");
   const [displayText, setDisplayText] = useState<string>("");
-  const fullText = "sandbox v0.1 by shashank";
+  const fullText = "sandbox-by-shashank";
 
   useEffect(() => {
     let i = 0;
@@ -121,14 +121,14 @@ export default function CodeEditorApp() {
       >
         {displayText}
         <a
-          href="https://www.linkedin.com/in/thatshashanguy/"
           target="_blank"
           rel="noopener noreferrer"
           className="text-red-500 hover:text-red-700 underline decoration-wavy"
         >
-          ;
+          v0.1;
         </a>
       </motion.h1>
+
       <div className="flex justify-between mb-4">
         <select
           className="p-2 border rounded"
